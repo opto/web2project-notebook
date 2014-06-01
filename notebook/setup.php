@@ -95,7 +95,7 @@ class CSetupNotebook {
 								KEY idx_note_task ( note_task ) ,
 								KEY idx_note_user ( note_creator ) ,
 								KEY idx_note_parent ( note_parent ) 
-								) TYPE = MYISAM ');
+								) ENGINE = MYISAM ');
 
 		$q->exec($sql);
 

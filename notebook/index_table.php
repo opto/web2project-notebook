@@ -166,11 +166,11 @@ $task->setAllowedSQL($AppUI->user_id, $q, 'note_task and task_project = note_pro
 $q->addOrder('company_name, note_title');
 
 //LIMIT ' . $xpg_min . ', ' . $xpg_pagesize ;
-if ($canRead) {
+//if ($canRead) {
 	$notes = $q->loadList();
-} else {
-	$AppUI->redirect('m=public&a=access_denied');
-}
+//} else {
+//	$AppUI->redirect('m=public&a=access_denied');
+//}
 // counts total recs from selection
 $xpg_totalrecs = count($notes);
 
