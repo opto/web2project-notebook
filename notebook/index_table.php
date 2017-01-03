@@ -132,6 +132,8 @@ $q->addQuery('con.company_name, con.company_id');
 
 $q->addTable('notes');
 
+$q->leftJoin('projects', 'pr', 'pr.project_id = note_project');
+$q->leftJoin('tasks', 't', 't.task_id = note_task');
 $q->leftJoin('companies', 'con', 'con.company_id = note_company');
 $q->leftJoin('users', 'u', 'user_id = note_creator');
 $q->leftJoin('contacts', 'c', 'user_contact = contact_id');
