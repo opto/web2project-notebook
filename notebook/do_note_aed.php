@@ -13,7 +13,7 @@ if ($note_id) {
 } else {
 	$obj->_message = 'added';
 }
-$now = new CDate();
+$now = new w2p_Utilities_Date();
 $obj->note_category = intval(w2PgetParam($_POST, 'note_category', 0));
 $note_body = stripslashes(w2PgetParam($_POST, 'note_body', 0));
 if (!$obj->bind($_POST)) {

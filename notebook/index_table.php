@@ -95,7 +95,7 @@ $fp = -1;
 $id = 0;
 for ($i = ($page - 1) * $xpg_pagesize; $i < $page * $xpg_pagesize && $i < $xpg_totalrecs; $i++) {
 	$row = $items[$i];
-	$note_created = new CDate($row['note_created']);
+	$note_created = new w2p_Utilities_Date($row['note_created']);
 
 	if ($fp != $row['note_company']) {
 		if (!$row['company_name']) {

@@ -86,8 +86,8 @@ if (!$obj && $note_id > 0) {
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
-$note_created = new CDate($obj->note_created);
-$note_modified = new CDate($obj->note_modified);
+$note_created = new w2p_Utilities_Date($obj->note_created);
+$note_modified = new w2p_Utilities_Date($obj->note_modified);
 
 // setup the title block
 $ttl = $note_id ? 'Edit Note' : 'Add Note';
