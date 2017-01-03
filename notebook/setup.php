@@ -31,14 +31,9 @@ if ($a == 'setup') {
 	echo w2PshowModuleConfig($config);
 }
 
-// TODO: To be completed later as needed.
-class CSetupNotebook {
-
-	function configure() {
-		return true;
-	}
-
-	function remove() {
+class CSetupNotebook extends w2p_System_Setup
+{
+	public function remove() {
 		global $AppUI;
 
         $q = new DBQuery();
@@ -55,139 +50,72 @@ class CSetupNotebook {
 		$q->addWhere('sysval_title = \'NoteStatus\'');
 		$q->exec();
 
-        $perms = $AppUI->acl();
-        return $perms->unregisterModule('todos');
+        return parent::remove();
 	}
 
-	function upgrade($old_version) {
-		return true;
-	}
-
-	function install() {
-		global $AppUI;
-
-        $q = new DBQuery();
+	public function install()
+    {
+        $q = $this->_getQuery();
 		$q->createTable('notes');
 		$q->createDefinition('(
-								`note_id` int(10) unsigned NOT NULL auto_increment,
-								`note_parent` int(10) unsigned NOT NULL default \'0\',
-								`note_company` int(10) unsigned NOT NULL default \'0\',
-								`note_department` int(10) unsigned NOT NULL default \'0\',
-								`note_project` int(10) unsigned NOT NULL default \'0\',
-								`note_task` int(10) unsigned NOT NULL default \'0\',
-								`note_file` int(10) unsigned NOT NULL default \'0\',
-								`note_module` int(10) unsigned NOT NULL default \'0\',
-								`note_module_name` varchar(64) NOT NULL default \'\',
-								`note_record_id` int(10) unsigned NOT NULL default \'0\',
-								`note_category` int(3) unsigned NOT NULL default \'0\',
-								`note_status` int(3) unsigned NOT NULL default \'0\',
-								`note_title` varchar(255) NOT NULL default \'\',
-								`note_body` text NOT NULL,
-								`note_doc_url` varchar(255) NOT NULL default \'\',
-								`note_private` int(1) unsigned NOT NULL default \'0\',
-								`note_creator` int(10) unsigned NOT NULL default \'0\',
-								`note_created` datetime NOT NULL default \'0000-00-00 00:00:00\',
-								`note_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-								`note_modified_by` int(10) unsigned NOT NULL default \'0\',
-								PRIMARY KEY  (`note_id`), 
-								KEY idx_note_company ( note_company ) ,
-								KEY idx_note_project ( note_project ) ,
-								KEY idx_note_task ( note_task ) ,
-								KEY idx_note_user ( note_creator ) ,
-								KEY idx_note_parent ( note_parent ) 
-								) ENGINE = MYISAM ');
+            `note_id` int(10) unsigned NOT NULL auto_increment,
+            `note_parent` int(10) unsigned NOT NULL default \'0\',
+            `note_company` int(10) unsigned NOT NULL default \'0\',
+            `note_department` int(10) unsigned NOT NULL default \'0\',
+            `note_project` int(10) unsigned NOT NULL default \'0\',
+            `note_task` int(10) unsigned NOT NULL default \'0\',
+            `note_file` int(10) unsigned NOT NULL default \'0\',
+            `note_module` int(10) unsigned NOT NULL default \'0\',
+            `note_module_name` varchar(64) NOT NULL default \'\',
+            `note_record_id` int(10) unsigned NOT NULL default \'0\',
+            `note_category` int(3) unsigned NOT NULL default \'0\',
+            `note_status` int(3) unsigned NOT NULL default \'0\',
+            `note_title` varchar(255) NOT NULL default \'\',
+            `note_body` text NOT NULL,
+            `note_doc_url` varchar(255) NOT NULL default \'\',
+            `note_private` int(1) unsigned NOT NULL default \'0\',
+            `note_creator` int(10) unsigned NOT NULL default \'0\',
+            `note_created` datetime NOT NULL default \'0000-00-00 00:00:00\',
+            `note_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+            `note_modified_by` int(10) unsigned NOT NULL default \'0\',
+            PRIMARY KEY  (`note_id`),
+            KEY idx_note_company ( note_company ) ,
+            KEY idx_note_project ( note_project ) ,
+            KEY idx_note_task ( note_task ) ,
+            KEY idx_note_user ( note_creator ) ,
+            KEY idx_note_parent ( note_parent )
+            ) ENGINE = MYISAM ');
 
-		$q->exec($sql);
+        if (!$q->exec()) {
+            return false;
+        }
 
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteCategory');
-		$q->addInsert('sysval_value', 'Unknown');
-		$q->addInsert('sysval_value_id', '0');
-		$q->exec();
+        $i = 0;
+        $noteCategories = ['Unknown', 'Idea', 'Workflow', 'Document'];
+        foreach ($noteCategories as $category) {
+            $q = $this->_getQuery();
+            $q->addTable('sysvals');
+            $q->addInsert('sysval_key_id', 1);
+            $q->addInsert('sysval_title', 'NoteCategory');
+            $q->addInsert('sysval_value', $category);
+            $q->addInsert('sysval_value_id', $i);
+            $q->exec();
+            $i++;
+        }
 
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteCategory');
-		$q->addInsert('sysval_value', 'Idea');
-		$q->addInsert('sysval_value_id', '1');
-		$q->exec();
+        $i = 0;
+        $noteStatus = ['Unknown', 'Reference', 'Read', 'Review', 'Do', 'Important', 'Requirement'];
+        foreach ($noteStatus as $status) {
+            $q = $this->_getQuery();
+            $q->addTable('sysvals');
+            $q->addInsert('sysval_key_id', 1);
+            $q->addInsert('sysval_title', 'NoteStatus');
+            $q->addInsert('sysval_value', $status);
+            $q->addInsert('sysval_value_id', $i);
+            $q->exec();
+            $i++;
+        }
 
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteCategory');
-		$q->addInsert('sysval_value', 'Workflow');
-		$q->addInsert('sysval_value_id', '2');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteCategory');
-		$q->addInsert('sysval_value', 'Document');
-		$q->addInsert('sysval_value_id', '3');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteStatus');
-		$q->addInsert('sysval_value', 'Unknown');
-		$q->addInsert('sysval_value_id', '0');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteStatus');
-		$q->addInsert('sysval_value', 'Reference');
-		$q->addInsert('sysval_value_id', '1');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteStatus');
-		$q->addInsert('sysval_value', 'Read');
-		$q->addInsert('sysval_value_id', '2');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteStatus');
-		$q->addInsert('sysval_value', 'Review');
-		$q->addInsert('sysval_value_id', '3');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteStatus');
-		$q->addInsert('sysval_value', 'Do');
-		$q->addInsert('sysval_value_id', '4');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteStatus');
-		$q->addInsert('sysval_value', 'Important');
-		$q->addInsert('sysval_value_id', '5');
-		$q->exec();
-
-		$q->clear();
-		$q->addTable('sysvals');
-		$q->addInsert('sysval_key_id', 1);
-		$q->addInsert('sysval_title', 'NoteStatus');
-		$q->addInsert('sysval_value', 'Requirement');
-		$q->addInsert('sysval_value_id', '6');
-		$q->exec();
-
-        $perms = $AppUI->acl();
-        return $perms->registerModule('Notebook', 'notebook');
+        return parent::install();
 	}
 }
