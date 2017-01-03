@@ -26,8 +26,6 @@ $task = new CTask();
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
-$note_types = w2PgetSysVal('NoteCategory');
-$note_statuses = w2PgetSysVal('NoteStatus');
 if ($tab <= 0) {
 	$catsql = '';
 } else {
@@ -80,6 +78,10 @@ $task->setAllowedSQL($AppUI->user_id, $q, 'note_task and task_project = note_pro
 $q->addOrder('company_name, note_title');
 
 $items = $q->loadList();
+
+$note_category = w2PgetSysVal('NoteCategory');
+$note_status = w2PgetSysVal('NoteStatus');
+$customLookups = array('note_category' => $note_category, 'note_status' => $note_status);
 
 $xpg_pagesize = w2PgetConfig('page_size', 50);
 $xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
@@ -142,8 +144,8 @@ for ($i = ($page - 1) * $xpg_pagesize; $i < $page * $xpg_pagesize && $i < $xpg_t
 	}
 ?>
 	</td>
-    <td width="10%" nowrap="nowrap"><?php echo $note_types[$row['note_category']]; ?></td> 
-    <td width="10%" nowrap="nowrap"><?php echo $note_statuses[$row['note_status']]; ?></td> 
+    <td width="10%" nowrap="nowrap"><?php echo $note_category[$row['note_category']]; ?></td>
+    <td width="10%" nowrap="nowrap"><?php echo $note_status[$row['note_status']]; ?></td>
 	<td width="10%" align="left"><a href="./index.php?m=projects&a=view&project_id=<?php echo $row['project_id']; ?>"><?php echo $row['project_name']; ?></a></td>
 	<td width="10%" align="left"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row['task_id']; ?>"><?php echo $row['task_name']; ?></a></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row['contact_first_name'] . ' ' . $row['contact_last_name']; ?></td>
