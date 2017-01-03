@@ -1,4 +1,4 @@
-<?php /* $Id: admin_tab.viewuser.notes.php 181 2010-12-29 16:20:58Z caseydk $ $URL: svn+ssh://caseydk@svn.code.sf.net/p/web2project-mod/code/notebook/trunk/admin_tab.viewuser.notes.php $ */
+<?php
 if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly');
 }
