@@ -118,13 +118,13 @@ for ($i = ($page - 1) * $xpg_pagesize; $i < $page * $xpg_pagesize && $i < $xpg_t
 <tr>
 	<td nowrap="nowrap" align="center" width="20">
 	<?php if ($canEdit) {
-		echo '<a href="./index.php?m=' . $m . '&a=addedit&note_id=' . $row['note_id'] . '">' . w2PshowImage('icons/stock_edit-16.png', '16', '16') . '</a>';
+		echo '<a href="./index.php?m=notebook&a=addedit&note_id=' . $row['note_id'] . '">' . w2PshowImage('icons/stock_edit-16.png', '16', '16') . '</a>';
 	}
 ?>
 	</td>
 	<td nowrap="8%">
 		<?php
-	echo '<a href="./index.php?m=' . $m . '&a=view&note_id=' . $row['note_id'] . '">' . $row['note_title'] . '</a>';
+	echo '<a href="./index.php?m=notebook&a=view&note_id=' . $row['note_id'] . '">' . $row['note_title'] . '</a>';
 	if (mb_trim($row['note_doc_url'])) {
 		echo '<a href="' . $row['note_doc_url'] . '" target="_blank">' . w2PshowImage('clip.png', '16', '16') . '</a>';
 	}

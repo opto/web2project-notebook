@@ -6,7 +6,7 @@ if (!defined('W2P_BASE_DIR')) {
 /**
  *  Name: Notebook
  *  Directory: notebook
- *  Version 2.0
+ *  Version 3.0.0
  *  Type: user
  *  UI Name: Notebook
  *  UI Icon: ?
@@ -14,7 +14,7 @@ if (!defined('W2P_BASE_DIR')) {
 
 $config = array();
 $config['mod_name'] = 'Notebook'; // name the module
-$config['mod_version'] = '2.0'; // add a version number
+$config['mod_version'] = '3.0.0'; // add a version number
 $config['mod_directory'] = 'notebook'; // tell web2Project where to find this module
 $config['mod_setup_class'] = 'CSetupNotebook'; // the name of the PHP setup class (used below)
 $config['mod_type'] = 'user'; // 'core' for modules distributed with w2P by standard, 'user' for additional modules from dotmods
@@ -33,10 +33,9 @@ if ($a == 'setup') {
 
 class CSetupNotebook extends w2p_System_Setup
 {
-	public function remove() {
-		global $AppUI;
-
-        $q = new DBQuery();
+	public function remove()
+    {
+        $q = $this->_getQuery();
 		$q->dropTable('notes');
 		$q->exec();
 
