@@ -51,21 +51,6 @@ class CNotebook extends w2p_Core_BaseObject
 		return null; // object is ok
 	}
 
-	public function delete()
-	{
-		global $w2Pconfig;
-		$this->_message = "deleted";
-
-		// delete the main table reference
-		$q = new w2p_Database_Query();
-		$q->setDelete('notes');
-		$q->addWhere('note_id = ' . (int)$this->note_id);
-		if (!$q->exec()) {
-			return db_error();
-		}
-		return null;
-	}
-
     public function hook_search()
     {
         $search['table'] = 'notes';
