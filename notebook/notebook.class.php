@@ -3,7 +3,7 @@ if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
 
-class CNote extends w2p_Core_BaseObject
+class CNotebook extends w2p_Core_BaseObject
 {
 
 	public $note_id = null;

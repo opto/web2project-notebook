@@ -51,7 +51,7 @@ $q->addWhere('note_id = ' . (int)$note_id);
 
 // check if this record has dependancies to prevent deletion
 $msg = '';
-$obj = new CNote();
+$obj = new CNotebook();
 $canDelete = $obj->canDelete($msg, $note_id);
 
 $obj = null;

@@ -7,7 +7,7 @@ if (!defined('W2P_BASE_DIR')) {
 $note_id = (int) w2PgetParam($_POST, 'note_id', 0);
 $del = (int) w2PgetParam($_POST, 'del', 0);
 
-$obj = new CNote();
+$obj = new CNotebook();
 if ($note_id) {
 	$obj->_message = 'updated';
 } else {
