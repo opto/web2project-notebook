@@ -3,16 +3,11 @@ if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
 global $AppUI, $deny1, $canRead, $canEdit;
+global $company_id, $project_id, $task_id, $user_id, $note_status, $showCompany, $m, $tab;
 
-// modified later by Pablo Roca (proca) in 18 August 2003 - added page support
-// Files modules: index page re-usable sub-table
-$m = 'notebook';
-
-$tab = $AppUI->getState('NoteIdxTab') !== null ? $AppUI->getState('NoteIdxTab') : 0;
 $page = (int) w2PgetParam($_GET, 'page', 1);
 $search = w2PgetParam($_REQUEST, 'search', '');
 
-global $company_id, $project_id, $task_id, $user_id, $note_status, $showCompany;
 if (!isset($project_id)) {
 	$project_id = w2PgetParam($_REQUEST, 'project_id', 0);
 }
