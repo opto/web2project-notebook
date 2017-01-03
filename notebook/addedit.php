@@ -91,7 +91,7 @@ $note_modified = new w2p_Utilities_Date($obj->note_modified);
 
 // setup the title block
 $ttl = $note_id ? 'Edit Note' : 'Add Note';
-$titleBlock = new CTitleBlock($ttl, 'notebook.png', $m, $m . '.' . $a);
+$titleBlock = new w2p_Theme_TitleBlock($ttl, 'notebook.png', $m, $m . '.' . $a);
 $titleBlock->addCrumb('?m=' . $m, 'notes list');
 $canDelete = $perms->checkModule($m, 'delete');
 if ($canDelete && $note_id > 0) {

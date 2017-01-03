@@ -3,8 +3,6 @@ if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
 
-$AppUI->savePlace();
-
 // retrieve any state parameters
 if (isset($_REQUEST['note_status'])) {
 	$AppUI->setState('NoteIdxStatus', w2PgetParam($_REQUEST, 'note_status', null));
@@ -48,7 +46,7 @@ $status = w2PgetSysVal('NoteStatus');
 $status = arrayMerge(array('-1' => $AppUI->_('All', UI_OUTPUT_JS)), $status);
 
 // setup the title block
-$titleBlock = new CTitleBlock('Notebook', 'notebook.png', $m, $m . '.' . $a);
+$titleBlock = new w2p_Theme_TitleBlock('Notebook', 'notebook.png', $m, $m . '.' . $a);
 $titleBlock->addCell($AppUI->_('Search') . ':');
 $titleBlock->addCell('<input type="text" class="text" size="12" name="search" onchange="document.searchfilter.submit();" value=' . "'$search'" . 'title="' . $AppUI->_('Search in name and description fields', UI_OUTPUT_JS) . '"/>', '', '<form action="?m=notebook" method="post" id="searchfilter">', '</form>');
 $titleBlock->addCell($AppUI->_('Company') . ':');

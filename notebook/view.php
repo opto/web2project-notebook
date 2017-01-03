@@ -12,8 +12,6 @@ if (!$canEdit) {
 	$AppUI->redirect('m=public&a=access_denied');
 }
 
-// load the companies class to retrieved denied companies
-require_once ($AppUI->getModuleClass('projects'));
 print '<script type="text/javascript" src="' . w2PgetConfig('base_url') . '/lib/tiny_mce/tiny_mce.js"></script>';
 print '
 <script language="javascript" type="text/javascript">
