@@ -1,18 +1,18 @@
-This is the readme file for the NOTEBOOK (VERSION 2.0) module for web2Project
+This is the readme file for the NOTEBOOK (VERSION 3.0) module for web2Project
 
 NOTES:
-This version is compatible with web2Project version 2.X (To be able to use the Smartsearch you will need at least SVN revision 1294 of web2Project code)
-This revision version is compatible with TinyMCE and was tested with its version 3.3.8
+This version is compatible with web2Project version 3.X (The use the Smartsearch has not been teted yet.)
+This revision version is compatible with CKEditor and was tested with its version 4
 
 STEPS TO INSTALL:
 1) Install the Notebook module files under a /modules/notebook folder on web2Project (create the folder if it does not exist)
-2) Install the TinyMCE library under a /lib/tiny_mce folder on web2Project (create the folder if it does not exist)
+2) CKEditor is included, please note its licence (LGPL)
 3) On web2Project, go to System Admin., View Modules and install the Notebook module, activate it and make it visible
 
 LICENSE:
-This module is licensed GPL (http://www.gnu.org/copyleft/gpl.html), Clear BSD or MIT, whatever suits you best and where/when applicable.
+This module is licensed  Clear BSD or MIT, whatever suits you best and where/when applicable.
 
-Copyright (c) 2007-2010 Pedro Azevedo, web2Project Team
+Copyright (c) 2007-2010 Pedro Azevedo, web2Project Team. 2017 Klaus Buecher (opto))
 
 All rights reserved.
 
