@@ -1,7 +1,7 @@
 This is the readme file for the NOTEBOOK (VERSION 3.0) module for web2Project
 
 NOTES:
-This version is compatible with web2Project version 3.X (The use the Smartsearch has not been teted yet.)
+This version is compatible with web2Project version 3.X (The use the Smartsearch has not been tested yet.)
 This revision version is compatible with CKEditor and was tested with its version 4
 
 STEPS TO INSTALL:
