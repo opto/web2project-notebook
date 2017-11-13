@@ -12,17 +12,7 @@ if (!$canEdit) {
 	$AppUI->redirect('m=public&a=access_denied');
 }
 
-print '<script type="text/javascript" src="' . w2PgetConfig('base_url') . '/lib/tiny_mce/tiny_mce.js"></script>';
-print '
-<script language="javascript" type="text/javascript">
-	tinyMCE.init({
-		// General options
-		mode : "textareas",
-		theme : "advanced",
-		readonly : true
-	});
-</script>
-';
+
 
 $note_task = (int) w2PgetParam($_GET, 'task_id', 0);
 $note_parent = (int) w2PgetParam($_GET, 'note_parent', 0);
@@ -183,7 +173,7 @@ $status = w2PgetSysVal('NoteStatus');
 		<tr>
 			<td align="right" valign="top" nowrap="nowrap"><?php echo $AppUI->_('Description'); ?>:</td>
 			<td align="left">
-				<textarea class="text" style="width:100%;height:320px"><?php echo $obj->note_body; ?></textarea>
+				<div id= "note_body" name = "note_body"  style="width:100%;height:320px"><?php echo $obj->note_body; ?></div>
 			</td>
 		</tr>
 
