@@ -37,6 +37,10 @@ $q->leftJoin('companies', 'con', 'con.company_id = note_company');
 $q->leftJoin('users', 'u', 'user_id = note_creator');
 $q->leftJoin('contacts', 'c', 'user_contact = contact_id');
 
+if ($m == 'notebook' && $tab) {
+    $_tab = $tab - 1;
+    $q->addWhere('(note_category = ' . (int) $_tab . ')');
+}
 if (!empty($search)) {
 	$q->addWhere('(note_title LIKE \'%' . $search . '%\' OR note_body LIKE \'%' . $search . '%\')');
 }
@@ -76,7 +80,6 @@ $items = array_slice($items, $xpg_min, $xpg_pagesize);
 
 $pageNav = buildPaginationNav($AppUI, $m, $tab, $xpg_totalrecs, $xpg_pagesize, $page);
 echo $pageNav;
-
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
