@@ -1,4 +1,4 @@
-<?php /* $Id: view.php 374 2012-06-26 07:35:45Z caseydk $ $URL: svn+ssh://caseydk@svn.code.sf.net/p/web2project-mod/code/notebook/trunk/view.php $ */
+<?php
 if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
@@ -21,6 +21,13 @@ print '
 		theme : "advanced",
 		readonly : true
 	});
+</script>
+<script language="javascript" type="text/javascript">
+    function delIt() {
+        if (confirm("' . $AppUI->_('doDelete') . ' note?")){
+            document.frmDelete.submit();
+        }
+    }
 </script>
 ';
 
@@ -52,7 +59,7 @@ $msg = '';
 $obj = new CNotebook();
 $canDelete = $obj->canDelete($msg, $note_id);
 
-$obj = null;
+//$obj = null;
 $q->loadObject($obj);
 // load the record data
 if (!$obj && $note_id > 0) {
@@ -119,6 +126,13 @@ $projects = arrayMerge(array('0' => $AppUI->_('All', UI_OUTPUT_JS)), $projects);
 $categories = w2PgetSysVal('NoteCategory');
 $status = w2PgetSysVal('NoteStatus');
 ?>
+
+
+<form name="frmDelete" action="?m=notebook" method="post" accept-charset="utf-8">
+    <input type="hidden" name="dosql" value="do_note_aed" />
+    <input type="hidden" name="del" value="1" />
+    <input type="hidden" name="note_id" value="<?php echo $note_id; ?>" />
+</form>
 
 <table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
 <tr>
