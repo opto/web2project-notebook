@@ -42,7 +42,7 @@ if ($m == 'notebook' && $tab) {
     $q->addWhere('(note_category = ' . (int) $_tab . ')');
 }
 if (!empty($search_string)) {
-    $q->addWhere('note_title LIKE "%' . $search_string . '%" OR note_body LIKE "%' . $search_string . '%"' );
+    $q->addWhere('note_name LIKE "%' . $search_string . '%" OR note_body LIKE "%' . $search_string . '%"' );
 }
 if ($company_id) { // Company
 	$q->addWhere('(note_company = ' . (int)$company_id . ')');
@@ -65,7 +65,7 @@ $q->addWhere('(note_private = 0 OR note_creator = ' . (int)$AppUI->user_id . ')'
 // Permissions
 $project->setAllowedSQL($AppUI->user_id, $q, 'note_project');
 $task->setAllowedSQL($AppUI->user_id, $q, 'note_task');
-$q->addOrder('company_name, note_title');
+$q->addOrder('company_name, note_name');
 
 $items = $q->loadList();
 

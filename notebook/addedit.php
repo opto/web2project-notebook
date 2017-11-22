@@ -185,7 +185,7 @@ function setTask( key, val ) {
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Note Title'); ?>:</td>
-			<td align="left"><input type="text" style="width:400px" class="text" name="note_title" value="<?php echo $obj->note_title; ?>" /></td>
+			<td align="left"><input type="text" style="width:400px" class="text" name="note_name" value="<?php echo $obj->note_name; ?>" /></td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Private'); ?>:</td>

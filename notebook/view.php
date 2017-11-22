@@ -140,7 +140,7 @@ $status = w2PgetSysVal('NoteStatus');
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Note Title'); ?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->note_title; ?></td>
+			<td align="left" class="hilite"><?php echo $obj->note_name; ?></td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Private'); ?>:</td>

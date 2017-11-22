@@ -18,7 +18,7 @@ class CNotebook extends w2p_Core_BaseObject
 	public $note_record_id = null;
 	public $note_category = null;
 	public $note_status = null;
-	public $note_title = null;
+	public $note_name = null;
 	public $note_body = null;
 	public $note_creator = null;
 	public $note_created = null;
@@ -59,9 +59,9 @@ class CNotebook extends w2p_Core_BaseObject
         $search['table_key'] = 'note_id'; // primary key in searched table
         $search['table_link'] = 'index.php?m=notebook&a=view&note_id='; // first part of link
         $search['table_title'] = 'Notebook';
-        $search['table_orderby'] = 'note_title';
-        $search['search_fields'] = array('n.note_title', 'n.note_body', 'n.note_doc_url');
-        $search['display_fields'] = array('n.note_title', 'n.note_body', 'n.note_doc_url');
+        $search['table_orderby'] = 'note_name';
+        $search['search_fields'] = array('n.note_name', 'n.note_body', 'n.note_doc_url');
+        $search['display_fields'] = array('n.note_name', 'n.note_body', 'n.note_doc_url');
 
         return $search;
     }    
