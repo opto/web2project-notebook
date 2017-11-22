@@ -69,10 +69,15 @@ $q->addOrder('company_name, note_title');
 
 $items = $q->loadList();
 
-$fieldList = array('note_title', 'note_category', 'note_status', 'note_project', 'note_task', 'note_creator', 'note_created');
-$fieldNames = array('Note Title', 'Category', 'Status', 'Project', 'Task', 'Creator', 'Date');
+$module = new w2p_System_Module();
+$fields = $module->loadSettings('notebook', 'index_list');
 
-$fields = array_combine($fieldList, $fieldNames);
+if (0 == count($fields)) {
+    $fieldList = array('note_title', 'note_category', 'note_status', 'note_project', 'note_task', 'note_creator', 'note_created');
+    $fieldNames = array('Note Title', 'Category', 'Status', 'Project', 'Task', 'Creator', 'Date');
+
+    $fields = array_combine($fieldList, $fieldNames);
+}
 
 $note_category = w2PgetSysVal('NoteCategory');
 $note_status = w2PgetSysVal('NoteStatus');

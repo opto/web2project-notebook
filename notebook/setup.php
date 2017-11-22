@@ -6,7 +6,7 @@ if (!defined('W2P_BASE_DIR')) {
 /**
  *  Name: Notebook
  *  Directory: notebook
- *  Version 3.0.0
+ *  Version 4.0.0
  *  Type: user
  *  UI Name: Notebook
  *  UI Icon: ?
@@ -14,7 +14,7 @@ if (!defined('W2P_BASE_DIR')) {
 
 $config = array();
 $config['mod_name'] = 'Notebook'; // name the module
-$config['mod_version'] = '3.0.0'; // add a version number
+$config['mod_version'] = '4.0.0'; // add a version number
 $config['mod_directory'] = 'notebook'; // tell web2Project where to find this module
 $config['mod_setup_class'] = 'CSetupNotebook'; // the name of the PHP setup class (used below)
 $config['mod_type'] = 'user'; // 'core' for modules distributed with w2P by standard, 'user' for additional modules from dotmods
@@ -25,7 +25,7 @@ $config['mod_config'] = false; // show 'configure' notebook in viewmods
 $config['mod_main_class'] = 'CNotebook'; // the name of the PHP class used by the module
 $config['permissions_item_table'] = 'notes';
 $config['permissions_item_field'] = 'note_id';
-$config['permissions_item_label'] = 'note_title';
+$config['permissions_item_label'] = 'note_name';
 
 if ($a == 'setup') {
 	echo w2PshowModuleConfig($config);
@@ -117,4 +117,36 @@ class CSetupNotebook extends w2p_System_Setup
 
         return parent::install();
 	}
+
+    public function upgrade($old_version) {
+        switch ($old_version) {
+            case '3.0.0':
+                $q = $this->_getQuery();
+                $q->alterTable('notes');
+                $q->addField('note_name', 'varchar(255)');
+                $q->exec();
+
+                $q->clear();
+                $q->addTable('notes');
+                $q->addUpdate('note_name', 'note_title', false, true);
+                $q->exec();
+
+                $this->addColumns();
+            default:
+                //do nothing
+        }
+        return true;
+    }
+
+    private function addColumns()
+    {
+        $module = new w2p_Core_Module();
+        $fieldList = array('note_name', 'note_category', 'note_status', 'note_project', 'note_task',
+            'note_creator', 'note_created');
+        $fieldNames = array('Note Title', 'Category', 'Status', 'Project', 'Task', 'Creator', 'Date');
+        $module->storeSettings('notebook', 'index_list', $fieldList, $fieldNames);
+
+        return true;
+    }
+
 }
