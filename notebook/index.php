@@ -1,18 +1,11 @@
-<?php /* $Id: index.php 181 2010-12-29 16:20:58Z caseydk $ $URL: svn+ssh://caseydk@svn.code.sf.net/p/web2project-mod/code/notebook/trunk/index.php $ */
+<?php
 if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
 
-// retrieve any state parameters
-if (isset($_REQUEST['note_status'])) {
-	$AppUI->setState('NoteIdxStatus', w2PgetParam($_REQUEST, 'note_status', null));
-}
-
-$note_status = $AppUI->getState('NoteIdxStatus') !== null ? $AppUI->getState('NoteIdxStatus') : -1;
-
-
 $company_id = $AppUI->processIntState('NoteIdxCompany', $_POST, 'company_id', 0);
 $project_id = $AppUI->processIntState('NoteIdxProject', $_POST, 'project_id', 0);
+$note_status = $AppUI->processIntState('NoteIdxStatus', $_POST, 'note_status', 0);
 
 
 if (w2PgetParam($_GET, 'tab', -1) != -1) {
@@ -46,9 +39,8 @@ $titleBlock = new w2p_Theme_TitleBlock('Notebook', 'notebook.png', $m, $m . '.' 
 $titleBlock->addSearchCell($search_string);
 $titleBlock->addFilterCell('Company', 'company_id', $companies, $company_id);
 $titleBlock->addFilterCell('Project', 'project_id', $projects, $project_id);
+$titleBlock->addFilterCell('Status', 'note_status', $status, $note_status);
 
-$titleBlock->addCell($AppUI->_('Status') . ':');
-$titleBlock->addCell(arraySelect($status, 'note_status', 'onchange="document.pickStatus.submit()" size="1" class="text"', $note_status), '', '<form name="pickStatus" action="?m=notebook" method="post">', '</form>');
 if ($canEdit) {
 	$titleBlock->addCell('<input type="submit" class="button" value="' . $AppUI->_('new note') . '">', '', '<form action="?m=notebook&a=addedit" method="post">', '</form>');
 }
