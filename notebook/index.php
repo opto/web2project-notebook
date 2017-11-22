@@ -45,10 +45,12 @@ $projects = arrayMerge(array('0' => $AppUI->_('All', UI_OUTPUT_JS)), $projects);
 $status = w2PgetSysVal('NoteStatus');
 $status = arrayMerge(array('-1' => $AppUI->_('All', UI_OUTPUT_JS)), $status);
 
+$search_string = w2PgetParam($_POST, 'search_string', '');
+$search_string = w2PformSafe($search_string, true);
+
 // setup the title block
 $titleBlock = new w2p_Theme_TitleBlock('Notebook', 'notebook.png', $m, $m . '.' . $a);
-$titleBlock->addCell($AppUI->_('Search') . ':');
-$titleBlock->addCell('<input type="text" class="text" size="12" name="search" onchange="document.searchfilter.submit();" value=' . "'$search'" . 'title="' . $AppUI->_('Search in name and description fields', UI_OUTPUT_JS) . '"/>', '', '<form action="?m=notebook" method="post" id="searchfilter">', '</form>');
+$titleBlock->addSearchCell($search_string);
 $titleBlock->addCell($AppUI->_('Company') . ':');
 $titleBlock->addCell(arraySelect($companies, 'company_id', 'onchange="document.pickCompany.submit()" size="1" class="text"', $company_id), '', '<form name="pickCompany" action="?m=notebook" method="post">', '</form>');
 $titleBlock->addCell($AppUI->_('Project') . ':');

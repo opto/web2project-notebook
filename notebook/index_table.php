@@ -3,7 +3,7 @@ if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
 global $AppUI, $deny1, $canRead, $canEdit;
-global $company_id, $project_id, $task_id, $user_id, $note_status, $showCompany, $m, $tab;
+global $company_id, $project_id, $task_id, $user_id, $note_status, $showCompany, $m, $tab, $search_string;
 
 $page = (int) w2PgetParam($_GET, 'page', 1);
 $search = w2PgetParam($_REQUEST, 'search', '');
@@ -41,8 +41,8 @@ if ($m == 'notebook' && $tab) {
     $_tab = $tab - 1;
     $q->addWhere('(note_category = ' . (int) $_tab . ')');
 }
-if (!empty($search)) {
-	$q->addWhere('(note_title LIKE \'%' . $search . '%\' OR note_body LIKE \'%' . $search . '%\')');
+if (!empty($search_string)) {
+    $q->addWhere('note_title LIKE "%' . $search_string . '%" OR note_body LIKE "%' . $search_string . '%"' );
 }
 if ($company_id) { // Company
 	$q->addWhere('(note_company = ' . (int)$company_id . ')');
