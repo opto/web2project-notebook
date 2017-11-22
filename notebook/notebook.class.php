@@ -20,7 +20,7 @@ class CNotebook extends w2p_Core_BaseObject
 	public $note_status = null;
 	public $note_name = null;
 	public $note_body = null;
-	public $note_creator = null;
+	public $note_owner = null;
 	public $note_created = null;
 	public $note_modified = null;
 	public $note_modified_by = null;
