@@ -83,4 +83,12 @@ $note_category = w2PgetSysVal('NoteCategory');
 $note_status = w2PgetSysVal('NoteStatus');
 $customLookups = array('note_category' => $note_category, 'note_status' => $note_status);
 
+
+/*
+ * I really hate that we have to do this but this module doesn't stick to our naming conventions and I have yet to
+ *   come up with a better approach.  - caseydk, 22 Nov 2017
+ */
+ob_start();
 include $AppUI->getTheme()->resolveTemplate('list');
+$_output = ob_get_clean();
+echo str_replace('m=notes', 'm=notebook', $_output);
