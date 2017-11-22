@@ -177,6 +177,9 @@ $view = new w2p_Output_HTML_ViewHelper($AppUI);
         <p><?php $view->showLabel('Status'); ?>
             <?php $view->showField('note_status', $status[$obj->note_status]); ?>
         </p>
+        <p><?php $view->showLabel('URL'); ?>
+            <?php $view->showField('note_doc_url', $obj->note_doc_url); ?>
+        </p>
         <p><?php $view->showLabel('Description'); ?>
             <?php $view->showField('_description', $obj->note_body); ?>
         </p>
