@@ -69,79 +69,13 @@ $q->addOrder('company_name, note_title');
 
 $items = $q->loadList();
 
+$fieldList = array('note_title', 'note_category', 'note_status', 'note_project', 'note_task', 'note_creator', 'note_created');
+$fieldNames = array('Note Title', 'Category', 'Status', 'Project', 'Task', 'Creator', 'Date');
+
+$fields = array_combine($fieldList, $fieldNames);
+
 $note_category = w2PgetSysVal('NoteCategory');
 $note_status = w2PgetSysVal('NoteStatus');
 $customLookups = array('note_category' => $note_category, 'note_status' => $note_status);
 
-$xpg_pagesize = w2PgetConfig('page_size', 50);
-$xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
-$xpg_totalrecs = count($items);
-$items = array_slice($items, $xpg_min, $xpg_pagesize);
-
-$pageNav = buildPaginationNav($AppUI, $m, $tab, $xpg_totalrecs, $xpg_pagesize, $page);
-echo $pageNav;
-?>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<th nowrap="nowrap">&nbsp;</th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Note Title'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Category'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Status'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Project'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Task'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Creator'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Date'); ?></th>
-</tr>
-<?php
-$fp = -1;
-
-$id = 0;
-for ($i = ($page - 1) * $xpg_pagesize; $i < $page * $xpg_pagesize && $i < $xpg_totalrecs; $i++) {
-	$row = $items[$i];
-	$note_created = new w2p_Utilities_Date($row['note_created']);
-
-	if ($fp != $row['note_company']) {
-		if (!$row['company_name']) {
-			$row['company_name'] = $AppUI->_('All Companies');
-		}
-		if ($showCompany) {
-			$s = '<tr>';
-			$s .= '<td colspan="10" style="border: outset 2px #eeeeee">';
-			if ($row['company_id'] > 0) {
-				$s .= '<a href="?m=companies&a=view&company_id=' . $row['company_id'] . '">' . $row['company_name'] . '</a>';
-			} else {
-				$s .= $row['company_name'];
-			}
-			$s .= '</td></tr>';
-			echo $s;
-		}
-	}
-	$fp = $row['note_company'];
-?>
-<tr>
-	<td nowrap="nowrap" align="center" width="20">
-	<?php if ($canEdit) {
-		echo '<a href="./index.php?m=notebook&a=addedit&note_id=' . $row['note_id'] . '">' . w2PshowImage('icons/stock_edit-16.png', '16', '16') . '</a>';
-	}
-?>
-	</td>
-	<td nowrap="8%">
-		<?php
-	echo '<a href="./index.php?m=notebook&a=view&note_id=' . $row['note_id'] . '">' . $row['note_title'] . '</a>';
-	if (mb_trim($row['note_doc_url'])) {
-		echo '<a href="' . $row['note_doc_url'] . '" target="_blank">' . w2PshowImage('clip.png', '16', '16') . '</a>';
-	}
-?>
-	</td>
-    <td width="10%" nowrap="nowrap"><?php echo $note_category[$row['note_category']]; ?></td>
-    <td width="10%" nowrap="nowrap"><?php echo $note_status[$row['note_status']]; ?></td>
-	<td width="10%" align="left"><a href="./index.php?m=projects&a=view&project_id=<?php echo $row['project_id']; ?>"><?php echo $row['project_name']; ?></a></td>
-	<td width="10%" align="left"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row['task_id']; ?>"><?php echo $row['task_name']; ?></a></td>
-	<td width="15%" nowrap="nowrap"><?php echo $row['contact_first_name'] . ' ' . $row['contact_last_name']; ?></td>
-	<td width="15%" nowrap="nowrap" align="center"><?php echo $note_created->format($df . ' ' . $tf); ?></td>
-</tr>
-<?php } ?>
-</table>
-<?php
-
-echo $pageNav;
+include $AppUI->getTheme()->resolveTemplate('list');
