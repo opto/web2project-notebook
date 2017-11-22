@@ -10,11 +10,8 @@ if (isset($_REQUEST['note_status'])) {
 
 $note_status = $AppUI->getState('NoteIdxStatus') !== null ? $AppUI->getState('NoteIdxStatus') : -1;
 
-if (isset($_REQUEST['company_id'])) {
-	$AppUI->setState('NoteIdxCompany', w2PgetParam($_REQUEST, 'company_id', null));
-}
 
-$company_id = $AppUI->getState('NoteIdxCompany') !== null ? $AppUI->getState('NoteIdxCompany') : 0;
+$company_id = $AppUI->processIntState('NoteIdxCompany', $_POST, 'company_id', 0);
 
 if (isset($_REQUEST['project_id'])) {
 	$AppUI->setState('NoteIdxProject', w2PgetParam($_REQUEST, 'project_id', null));
@@ -51,8 +48,7 @@ $search_string = w2PformSafe($search_string, true);
 // setup the title block
 $titleBlock = new w2p_Theme_TitleBlock('Notebook', 'notebook.png', $m, $m . '.' . $a);
 $titleBlock->addSearchCell($search_string);
-$titleBlock->addCell($AppUI->_('Company') . ':');
-$titleBlock->addCell(arraySelect($companies, 'company_id', 'onchange="document.pickCompany.submit()" size="1" class="text"', $company_id), '', '<form name="pickCompany" action="?m=notebook" method="post">', '</form>');
+$titleBlock->addFilterCell('Company', 'company_id', $companies, $company_id);
 $titleBlock->addCell($AppUI->_('Project') . ':');
 $titleBlock->addCell(arraySelect($projects, 'project_id', 'onchange="document.pickProject.submit()" size="1" class="text"', $project_id), '', '<form name="pickProject" action="?m=notebook" method="post">', '</form>');
 $titleBlock->addCell($AppUI->_('Status') . ':');
