@@ -11,5 +11,7 @@ if (canView('notebook')) {
 		echo w2PshowImage('stock_attach-16.png', 16, 16, '', '', $m);
 	}
 	$company_id = 0;
+
+    $m = 'users&a=view&user_id' . $user_id;                         // override to correct pagination issue
 	include (W2P_BASE_DIR . '/modules/notebook/index_table.php');
 }
