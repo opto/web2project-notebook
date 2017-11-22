@@ -134,80 +134,51 @@ $status = w2PgetSysVal('NoteStatus');
     <input type="hidden" name="note_id" value="<?php echo $note_id; ?>" />
 </form>
 
-<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
-<tr>
-	<td width="100%" valign="top" align="center">
-		<table cellspacing="1" cellpadding="2" width="100%">
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Note Title'); ?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->note_name; ?></td>
-		</tr>
-		<tr>
-			<td align="right"><?php echo $AppUI->_('Private'); ?>:</td>
-			<td>
-				<input type="checkbox" disabled="disabled" name="note_private" <?php echo ($obj->note_private ? 'checked="checked"' : ''); ?> />
-			</td>
-		</tr>
-	<?php if ($note_id) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Created By'); ?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->contact_first_name . ' ' . $obj->contact_last_name; ?>, <?php echo $note_created->format($df . ' ' . $tf); ?></td>
-		</tr>
-	<?php } ?>
-	<?php if ($obj->note_modified_by) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Modified By'); ?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->modified_first_name . ' ' . $obj->modified_last_name; ?>, <?php echo $note_modified->format($df . ' ' . $tf); ?></td>
-		</tr>
-	<?php } ?>
-        <tr>
-            <td align="right" nowrap="nowrap"><?php echo $AppUI->_('Category'); ?>:</td>
-			<td align="left" class="hilite">
-            	<?php echo $categories[$obj->note_category]; ?>
-            </td>
-		</tr>
-        <tr>
-            <td align="right" nowrap="nowrap"><?php echo $AppUI->_('Status'); ?>:</td>
-			<td align="left" class="hilite">
-            	<?php echo $status[$obj->note_status]; ?>
-            </td>
-		</tr>
-	<?php if ($company_name) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company'); ?>:</td>
-			<td align="left" class="hilite">
-				<?php echo $company_name; ?>
-            </td>
-		</tr>
-	<?php } ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project'); ?>:</td>
-			<td align="left" class="hilite">
-				<?php echo $projects[$note_project]; ?>
-			</td>
-		</tr>
+<?php
 
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task'); ?>:</td>
-			<td align="left" class="hilite">
-				<?php echo $task_name; ?>
-			</td>
-		</tr>
+$view = new w2p_Output_HTML_ViewHelper($AppUI);
 
-		<tr>
-			<td align="right" valign="top" nowrap="nowrap"><?php echo $AppUI->_('Description'); ?>:</td>
-			<td align="left">
-				<textarea class="text" style="width:100%;height:320px"><?php echo $obj->note_body; ?></textarea>
-			</td>
-		</tr>
+?>
 
-	<?php if (mb_trim($obj->note_doc_url)) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap">&nbsp;</td>
-			<td align="left" nowrap="nowrap"><a href="<?php echo $obj->note_doc_url; ?>" target="_blank"><?php echo $AppUI->_('Note Document'); ?></a></td>
-		</tr>
-	<?php } ?>
-		</table>
-	</td>
-</tr>
-</table>
+<div class="std view notebook">
+    <div class="column left" style="width: 25%">
+        <p><?php $view->showLabel('Note Title'); ?>
+            <?php $view->showField('note_name', $obj->note_name); ?>
+        </p>
+        <p><?php $view->showLabel('Company'); ?>
+            <?php $view->showField('note_company', $obj->note_company); ?>
+        </p>
+        <p><?php $view->showLabel('Project'); ?>
+            <?php $view->showField('note_project', $obj->note_project); ?>
+        </p>
+        <p><?php $view->showLabel('Task'); ?>
+            <?php $view->showField('note_task', $obj->note_task); ?>
+        </p>
+        <p><?php $view->showLabel('Created By'); ?>
+            <?php $view->showField('note_owner', $obj->note_creator); ?>
+        </p>
+        <p><?php $view->showLabel('Created At'); ?>
+            <?php $view->showField('_datetime', $obj->note_created); ?>
+        </p>
+        <p><?php $view->showLabel('Modified By'); ?>
+            <?php $view->showField('note_owner', $obj->note_modified_by); ?>
+        </p>
+        <p><?php $view->showLabel('Modified At'); ?>
+            <?php $view->showField('_datetime', $obj->note_modified); ?>
+        </p>
+    </div>
+    <div class="column right" style="width: 70%;">
+        <p><?php $view->showLabel('Private'); ?>
+            <input type="checkbox" disabled="disabled" name="note_private" <?php echo ($obj->note_private ? 'checked="checked"' : ''); ?> />
+        </p>
+        <p><?php $view->showLabel('Category'); ?>
+            <?php $view->showField('note_category', $categories[$obj->note_category]); ?>
+        </p>
+        <p><?php $view->showLabel('Status'); ?>
+            <?php $view->showField('note_status', $status[$obj->note_status]); ?>
+        </p>
+        <p><?php $view->showLabel('Description'); ?>
+            <?php $view->showField('_description', $obj->note_body); ?>
+        </p>
+    </div>
+</div>
