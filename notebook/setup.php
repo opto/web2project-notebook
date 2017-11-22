@@ -124,11 +124,13 @@ class CSetupNotebook extends w2p_System_Setup
                 $q = $this->_getQuery();
                 $q->alterTable('notes');
                 $q->addField('note_name', 'varchar(255)');
+                $q->addField('note_owner', 'int(10)');
                 $q->exec();
 
                 $q->clear();
                 $q->addTable('notes');
                 $q->addUpdate('note_name', 'note_title', false, true);
+                $q->addUpdate('note_owner', 'note_creator', false, true);
                 $q->exec();
 
                 $this->addColumns();
