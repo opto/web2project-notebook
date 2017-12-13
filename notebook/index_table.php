@@ -3,7 +3,7 @@ if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
 global $AppUI, $deny1, $canRead, $canEdit;
-global $company_id, $project_id, $task_id, $user_id, $note_status, $showCompany, $m, $tab;
+global $company_id, $project_id, $task_id, $user_id, $note_status, $showCompany, $m, $tab, $search_string;
 
 $page = (int) w2PgetParam($_GET, 'page', 1);
 $search = w2PgetParam($_REQUEST, 'search', '');
@@ -37,8 +37,12 @@ $q->leftJoin('companies', 'con', 'con.company_id = note_company');
 $q->leftJoin('users', 'u', 'user_id = note_creator');
 $q->leftJoin('contacts', 'c', 'user_contact = contact_id');
 
-if (!empty($search)) {
-	$q->addWhere('(note_title LIKE \'%' . $search . '%\' OR note_body LIKE \'%' . $search . '%\')');
+if ($m == 'notebook' && $tab) {
+    $_tab = $tab - 1;
+    $q->addWhere('(note_category = ' . (int) $_tab . ')');
+}
+if (!empty($search_string)) {
+    $q->addWhere('note_name LIKE "%' . $search_string . '%" OR note_body LIKE "%' . $search_string . '%"' );
 }
 if ($company_id) { // Company
 	$q->addWhere('(note_company = ' . (int)$company_id . ')');
@@ -61,84 +65,30 @@ $q->addWhere('(note_private = 0 OR note_creator = ' . (int)$AppUI->user_id . ')'
 // Permissions
 $project->setAllowedSQL($AppUI->user_id, $q, 'note_project');
 $task->setAllowedSQL($AppUI->user_id, $q, 'note_task');
-$q->addOrder('company_name, note_title');
+$q->addOrder('company_name, note_name');
 
 $items = $q->loadList();
+
+$module = new w2p_System_Module();
+$fields = $module->loadSettings('notebook', 'index_list');
+
+if (0 == count($fields)) {
+    $fieldList = array('note_title', 'note_category', 'note_status', 'note_project', 'note_task', 'note_creator', 'note_created');
+    $fieldNames = array('Note Title', 'Category', 'Status', 'Project', 'Task', 'Creator', 'Date');
+
+    $fields = array_combine($fieldList, $fieldNames);
+}
 
 $note_category = w2PgetSysVal('NoteCategory');
 $note_status = w2PgetSysVal('NoteStatus');
 $customLookups = array('note_category' => $note_category, 'note_status' => $note_status);
 
-$xpg_pagesize = w2PgetConfig('page_size', 50);
-$xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
-$xpg_totalrecs = count($items);
-$items = array_slice($items, $xpg_min, $xpg_pagesize);
 
-$pageNav = buildPaginationNav($AppUI, $m, $tab, $xpg_totalrecs, $xpg_pagesize, $page);
-echo $pageNav;
-
-?>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<th nowrap="nowrap">&nbsp;</th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Note Title'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Category'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Status'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Project'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Task'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Creator'); ?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Date'); ?></th>
-</tr>
-<?php
-$fp = -1;
-
-$id = 0;
-for ($i = ($page - 1) * $xpg_pagesize; $i < $page * $xpg_pagesize && $i < $xpg_totalrecs; $i++) {
-	$row = $items[$i];
-	$note_created = new w2p_Utilities_Date($row['note_created']);
-
-	if ($fp != $row['note_company']) {
-		if (!$row['company_name']) {
-			$row['company_name'] = $AppUI->_('All Companies');
-		}
-		if ($showCompany) {
-			$s = '<tr>';
-			$s .= '<td colspan="10" style="border: outset 2px #eeeeee">';
-			if ($row['company_id'] > 0) {
-				$s .= '<a href="?m=companies&a=view&company_id=' . $row['company_id'] . '">' . $row['company_name'] . '</a>';
-			} else {
-				$s .= $row['company_name'];
-			}
-			$s .= '</td></tr>';
-			echo $s;
-		}
-	}
-	$fp = $row['note_company'];
-?>
-<tr>
-	<td nowrap="nowrap" align="center" width="20">
-	<?php if ($canEdit) {
-		echo '<a href="./index.php?m=notebook&a=addedit&note_id=' . $row['note_id'] . '">' . w2PshowImage('icons/stock_edit-16.png', '16', '16') . '</a>';
-	}
-?>
-	</td>
-	<td nowrap="8%">
-		<?php
-	echo '<a href="./index.php?m=notebook&a=view&note_id=' . $row['note_id'] . '">' . $row['note_title'] . '</a>';
-	if (mb_trim($row['note_doc_url'])) {
-		echo '<a href="' . $row['note_doc_url'] . '" target="_blank">' . w2PshowImage('clip.png', '16', '16') . '</a>';
-	}
-?>
-	</td>
-    <td width="10%" nowrap="nowrap"><?php echo $note_category[$row['note_category']]; ?></td>
-    <td width="10%" nowrap="nowrap"><?php echo $note_status[$row['note_status']]; ?></td>
-	<td width="10%" align="left"><a href="./index.php?m=projects&a=view&project_id=<?php echo $row['project_id']; ?>"><?php echo $row['project_name']; ?></a></td>
-	<td width="10%" align="left"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row['task_id']; ?>"><?php echo $row['task_name']; ?></a></td>
-	<td width="15%" nowrap="nowrap"><?php echo $row['contact_first_name'] . ' ' . $row['contact_last_name']; ?></td>
-	<td width="15%" nowrap="nowrap" align="center"><?php echo $note_created->format($df . ' ' . $tf); ?></td>
-</tr>
-<?php } ?>
-</table>
-<?php
-
-echo $pageNav;
+/*
+ * I really hate that we have to do this but this module doesn't stick to our naming conventions and I have yet to
+ *   come up with a better approach.  - caseydk, 22 Nov 2017
+ */
+ob_start();
+include $AppUI->getTheme()->resolveTemplate('list');
+$_output = ob_get_clean();
+echo str_replace('m=notes', 'm=notebook', $_output);

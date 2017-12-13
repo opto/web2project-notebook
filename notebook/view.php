@@ -1,4 +1,4 @@
-<?php /* $Id: view.php 374 2012-06-26 07:35:45Z caseydk $ $URL: svn+ssh://caseydk@svn.code.sf.net/p/web2project-mod/code/notebook/trunk/view.php $ */
+<?php
 if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
@@ -12,7 +12,28 @@ if (!$canEdit) {
 	$AppUI->redirect('m=public&a=access_denied');
 }
 
+<<<<<<< HEAD
 
+=======
+print '<script type="text/javascript" src="' . w2PgetConfig('base_url') . '/lib/tiny_mce/tiny_mce.js"></script>';
+print '
+<script language="javascript" type="text/javascript">
+	tinyMCE.init({
+		// General options
+		mode : "textareas",
+		theme : "advanced",
+		readonly : true
+	});
+</script>
+<script language="javascript" type="text/javascript">
+    function delIt() {
+        if (confirm("' . $AppUI->_('doDelete') . ' note?")){
+            document.frmDelete.submit();
+        }
+    }
+</script>
+';
+>>>>>>> remotes/origin/master
 
 $note_task = (int) w2PgetParam($_GET, 'task_id', 0);
 $note_parent = (int) w2PgetParam($_GET, 'note_parent', 0);
@@ -42,7 +63,7 @@ $msg = '';
 $obj = new CNotebook();
 $canDelete = $obj->canDelete($msg, $note_id);
 
-$obj = null;
+//$obj = null;
 $q->loadObject($obj);
 // load the record data
 if (!$obj && $note_id > 0) {
@@ -120,6 +141,7 @@ print '
 ?>
 
 
+<<<<<<< HEAD
 
 
 
@@ -245,3 +267,62 @@ document.getElementById("pasteArea").onpaste = function(event) {
 
 }</tr>
 </table>
+=======
+<form name="frmDelete" action="?m=notebook" method="post" accept-charset="utf-8">
+    <input type="hidden" name="dosql" value="do_note_aed" />
+    <input type="hidden" name="del" value="1" />
+    <input type="hidden" name="note_id" value="<?php echo $note_id; ?>" />
+</form>
+
+<?php
+
+$view = new w2p_Output_HTML_ViewHelper($AppUI);
+
+?>
+
+<div class="std view notebook">
+    <div class="column left" style="width: 25%">
+        <p><?php $view->showLabel('Note Title'); ?>
+            <?php $view->showField('note_name', $obj->note_name); ?>
+        </p>
+        <p><?php $view->showLabel('Company'); ?>
+            <?php $view->showField('note_company', $obj->note_company); ?>
+        </p>
+        <p><?php $view->showLabel('Project'); ?>
+            <?php $view->showField('note_project', $obj->note_project); ?>
+        </p>
+        <p><?php $view->showLabel('Task'); ?>
+            <?php $view->showField('note_task', $obj->note_task); ?>
+        </p>
+        <p><?php $view->showLabel('Created By'); ?>
+            <?php $view->showField('note_owner', $obj->note_creator); ?>
+        </p>
+        <p><?php $view->showLabel('Created At'); ?>
+            <?php $view->showField('_datetime', $obj->note_created); ?>
+        </p>
+        <p><?php $view->showLabel('Modified By'); ?>
+            <?php $view->showField('note_owner', $obj->note_modified_by); ?>
+        </p>
+        <p><?php $view->showLabel('Modified At'); ?>
+            <?php $view->showField('_datetime', $obj->note_modified); ?>
+        </p>
+    </div>
+    <div class="column right" style="width: 70%;">
+        <p><?php $view->showLabel('Private'); ?>
+            <input type="checkbox" disabled="disabled" name="note_private" <?php echo ($obj->note_private ? 'checked="checked"' : ''); ?> />
+        </p>
+        <p><?php $view->showLabel('Category'); ?>
+            <?php $view->showField('note_category', $categories[$obj->note_category]); ?>
+        </p>
+        <p><?php $view->showLabel('Status'); ?>
+            <?php $view->showField('note_status', $status[$obj->note_status]); ?>
+        </p>
+        <p><?php $view->showLabel('URL'); ?>
+            <?php $view->showField('note_doc_url', $obj->note_doc_url); ?>
+        </p>
+        <p><?php $view->showLabel('Description'); ?>
+            <?php $view->showField('_description', $obj->note_body); ?>
+        </p>
+    </div>
+</div>
+>>>>>>> remotes/origin/master

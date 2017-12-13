@@ -1,26 +1,12 @@
-<?php /* $Id: index.php 181 2010-12-29 16:20:58Z caseydk $ $URL: svn+ssh://caseydk@svn.code.sf.net/p/web2project-mod/code/notebook/trunk/index.php $ */
+<?php
 if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
 
-// retrieve any state parameters
-if (isset($_REQUEST['note_status'])) {
-	$AppUI->setState('NoteIdxStatus', w2PgetParam($_REQUEST, 'note_status', null));
-}
+$company_id = $AppUI->processIntState('NoteIdxCompany', $_POST, 'company_id', 0);
+$project_id = $AppUI->processIntState('NoteIdxProject', $_POST, 'project_id', 0);
+$note_status = $AppUI->processIntState('NoteIdxStatus', $_POST, 'note_status', 0);
 
-$note_status = $AppUI->getState('NoteIdxStatus') !== null ? $AppUI->getState('NoteIdxStatus') : -1;
-
-if (isset($_REQUEST['company_id'])) {
-	$AppUI->setState('NoteIdxCompany', w2PgetParam($_REQUEST, 'company_id', null));
-}
-
-$company_id = $AppUI->getState('NoteIdxCompany') !== null ? $AppUI->getState('NoteIdxCompany') : 0;
-
-if (isset($_REQUEST['project_id'])) {
-	$AppUI->setState('NoteIdxProject', w2PgetParam($_REQUEST, 'project_id', null));
-}
-
-$project_id = $AppUI->getState('NoteIdxProject') !== null ? $AppUI->getState('NoteIdxProject') : 0;
 
 if (w2PgetParam($_GET, 'tab', -1) != -1) {
 	$AppUI->setState('NoteIdxTab', w2PgetParam($_GET, 'tab'));
@@ -45,16 +31,16 @@ $projects = arrayMerge(array('0' => $AppUI->_('All', UI_OUTPUT_JS)), $projects);
 $status = w2PgetSysVal('NoteStatus');
 $status = arrayMerge(array('-1' => $AppUI->_('All', UI_OUTPUT_JS)), $status);
 
+$search_string = w2PgetParam($_POST, 'search_string', '');
+$search_string = w2PformSafe($search_string, true);
+
 // setup the title block
 $titleBlock = new w2p_Theme_TitleBlock('Notebook', 'notebook.png', $m, $m . '.' . $a);
-$titleBlock->addCell($AppUI->_('Search') . ':');
-$titleBlock->addCell('<input type="text" class="text" size="12" name="search" onchange="document.searchfilter.submit();" value=' . "'$search'" . 'title="' . $AppUI->_('Search in name and description fields', UI_OUTPUT_JS) . '"/>', '', '<form action="?m=notebook" method="post" id="searchfilter">', '</form>');
-$titleBlock->addCell($AppUI->_('Company') . ':');
-$titleBlock->addCell(arraySelect($companies, 'company_id', 'onchange="document.pickCompany.submit()" size="1" class="text"', $company_id), '', '<form name="pickCompany" action="?m=notebook" method="post">', '</form>');
-$titleBlock->addCell($AppUI->_('Project') . ':');
-$titleBlock->addCell(arraySelect($projects, 'project_id', 'onchange="document.pickProject.submit()" size="1" class="text"', $project_id), '', '<form name="pickProject" action="?m=notebook" method="post">', '</form>');
-$titleBlock->addCell($AppUI->_('Status') . ':');
-$titleBlock->addCell(arraySelect($status, 'note_status', 'onchange="document.pickStatus.submit()" size="1" class="text"', $note_status), '', '<form name="pickStatus" action="?m=notebook" method="post">', '</form>');
+$titleBlock->addSearchCell($search_string);
+$titleBlock->addFilterCell('Company', 'company_id', $companies, $company_id);
+$titleBlock->addFilterCell('Project', 'project_id', $projects, $project_id);
+$titleBlock->addFilterCell('Status', 'note_status', $status, $note_status);
+
 if ($canEdit) {
 	$titleBlock->addCell('<input type="submit" class="button" value="' . $AppUI->_('new note') . '">', '', '<form action="?m=notebook&a=addedit" method="post">', '</form>');
 }
