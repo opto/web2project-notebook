@@ -108,7 +108,28 @@ $projects = arrayMerge(array('0' => $AppUI->_('All', UI_OUTPUT_JS)), $projects);
 
 $categories = w2PgetSysVal('NoteCategory');
 $status = w2PgetSysVal('NoteStatus');
+
+
+print '
+
+';
+
+
+
+
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
 <tr>
@@ -186,4 +207,41 @@ $status = w2PgetSysVal('NoteStatus');
 		</table>
 	</td>
 </tr>
+<tr>
+<textarea id="pasteArea" placeholder="Paste Image Here"></textarea>
+<img id="pastedImage">  </img>
+
+         <script language="javascript" type="text/javascript">
+
+
+document.getElementById("pasteArea").onpaste = function(event) {
+  // use event.originalEvent.clipboard for newer chrome versions
+  var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+  var blob = null;
+  alert("paste");
+  alert(items.length);
+   var dt = event.clipboardData.dataTransfer;
+  var files = dt.files;
+
+  var count = event.clipboardData.dataTransfer.types.length;    alert(count);
+  for (var i = 0; i < items.length; i++) {
+   alert(items[i].type);
+   
+      if (items[i].type.indexOf("image") === 0) {
+      blob = items[i].getAsFile();
+    }
+  }
+
+  if (blob !== null) {
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      document.getElementById("pastedImage").src = event.target.result;
+    };
+    reader.readAsDataURL(blob);
+  }
+}
+
+</script>
+
+}</tr>
 </table>

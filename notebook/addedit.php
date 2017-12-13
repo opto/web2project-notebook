@@ -15,7 +15,9 @@ if (!$canEdit) {
 print '
        <script language="javascript" type="text/javascript">
 $(document).ready(function(){ CKEDITOR.replace( "note_body" );  });
-		
+editor.on( "paste", function( evt ) {
+    alert("paste");
+} );		
 </script>
 ';
 
