@@ -65,4 +65,38 @@ class CNotebook extends w2p_Core_BaseObject
 
         return $search;
     }    
+    
+    
+    protected function hook_preCreate()
+    {
+
+        $q = $this->_getQuery();
+        $this->note_created = $q->dbfnNowWithTZ();
+        $this->note_creator =  $this->_AppUI->user_id;
+
+        parent::hook_preCreate();
+    }
+
+
+
+    protected function hook_preStore()
+    {
+        $q = $this->_getQuery();
+        $this->note_modified = $q->dbfnNowWithTZ();
+
+
+ 
+        parent::hook_preStore();
+            }
+
+
+     protected function hook_preUpdate()
+    {
+
+
+        $this->note_modified_by =  $this->_AppUI->user_id;
+
+        parent::hook_preUpdate();
+            }
+   
 }
