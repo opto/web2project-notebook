@@ -12,12 +12,9 @@ if (!$canEdit) {
 	$AppUI->redirect('m=public&a=access_denied');
 }
 
-<<<<<<< HEAD
+/*
 
-=======
-print '<script type="text/javascript" src="' . w2PgetConfig('base_url') . '/lib/tiny_mce/tiny_mce.js"></script>';
-print '
-<script language="javascript" type="text/javascript">
+ <script language="javascript" type="text/javascript">
 	tinyMCE.init({
 		// General options
 		mode : "textareas",
@@ -25,6 +22,10 @@ print '
 		readonly : true
 	});
 </script>
+ */
+//print '<script type="text/javascript" src="' . w2PgetConfig('base_url') . '/lib/tiny_mce/tiny_mce.js"></script>';
+print '
+
 <script language="javascript" type="text/javascript">
     function delIt() {
         if (confirm("' . $AppUI->_('doDelete') . ' note?")){
@@ -33,7 +34,7 @@ print '
     }
 </script>
 ';
->>>>>>> remotes/origin/master
+
 
 $note_task = (int) w2PgetParam($_GET, 'task_id', 0);
 $note_parent = (int) w2PgetParam($_GET, 'note_parent', 0);
@@ -141,7 +142,6 @@ print '
 ?>
 
 
-<<<<<<< HEAD
 
 
 
@@ -152,122 +152,6 @@ print '
 
 
 
-
-<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
-<tr>
-	<td width="100%" valign="top" align="center">
-		<table cellspacing="1" cellpadding="2" width="100%">
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Note Title'); ?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->note_title; ?></td>
-		</tr>
-		<tr>
-			<td align="right"><?php echo $AppUI->_('Private'); ?>:</td>
-			<td>
-				<input type="checkbox" disabled="disabled" name="note_private" <?php echo ($obj->note_private ? 'checked="checked"' : ''); ?> />
-			</td>
-		</tr>
-	<?php if ($note_id) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Created By'); ?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->contact_first_name . ' ' . $obj->contact_last_name; ?>, <?php echo $note_created->format($df . ' ' . $tf); ?></td>
-		</tr>
-	<?php } ?>
-	<?php if ($obj->note_modified_by) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Modified By'); ?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->modified_first_name . ' ' . $obj->modified_last_name; ?>, <?php echo $note_modified->format($df . ' ' . $tf); ?></td>
-		</tr>
-	<?php } ?>
-        <tr>
-            <td align="right" nowrap="nowrap"><?php echo $AppUI->_('Category'); ?>:</td>
-			<td align="left" class="hilite">
-            	<?php echo $categories[$obj->note_category]; ?>
-            </td>
-		</tr>
-        <tr>
-            <td align="right" nowrap="nowrap"><?php echo $AppUI->_('Status'); ?>:</td>
-			<td align="left" class="hilite">
-            	<?php echo $status[$obj->note_status]; ?>
-            </td>
-		</tr>
-	<?php if ($company_name) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company'); ?>:</td>
-			<td align="left" class="hilite">
-				<?php echo $company_name; ?>
-            </td>
-		</tr>
-	<?php } ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project'); ?>:</td>
-			<td align="left" class="hilite">
-				<?php echo $projects[$note_project]; ?>
-			</td>
-		</tr>
-
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task'); ?>:</td>
-			<td align="left" class="hilite">
-				<?php echo $task_name; ?>
-			</td>
-		</tr>
-
-		<tr>
-			<td align="right" valign="top" nowrap="nowrap"><?php echo $AppUI->_('Description'); ?>:</td>
-			<td align="left">
-				<div id= "note_body" name = "note_body"  style="width:100%;height:320px"><?php echo $obj->note_body; ?></div>
-			</td>
-		</tr>
-
-	<?php if (mb_trim($obj->note_doc_url)) { ?>
-		<tr>
-			<td align="right" nowrap="nowrap">&nbsp;</td>
-			<td align="left" nowrap="nowrap"><a href="<?php echo $obj->note_doc_url; ?>" target="_blank"><?php echo $AppUI->_('Note Document'); ?></a></td>
-		</tr>
-	<?php } ?>
-		</table>
-	</td>
-</tr>
-<tr>
-<textarea id="pasteArea" placeholder="Paste Image Here"></textarea>
-<img id="pastedImage">  </img>
-
-         <script language="javascript" type="text/javascript">
-
-
-document.getElementById("pasteArea").onpaste = function(event) {
-  // use event.originalEvent.clipboard for newer chrome versions
-  var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-  var blob = null;
-  alert("paste");
-  alert(items.length);
-   var dt = event.clipboardData.dataTransfer;
-  var files = dt.files;
-
-  var count = event.clipboardData.dataTransfer.types.length;    alert(count);
-  for (var i = 0; i < items.length; i++) {
-   alert(items[i].type);
-   
-      if (items[i].type.indexOf("image") === 0) {
-      blob = items[i].getAsFile();
-    }
-  }
-
-  if (blob !== null) {
-    var reader = new FileReader();
-    reader.onload = function(event) {
-      document.getElementById("pastedImage").src = event.target.result;
-    };
-    reader.readAsDataURL(blob);
-  }
-}
-
-</script>
-
-}</tr>
-</table>
-=======
 <form name="frmDelete" action="?m=notebook" method="post" accept-charset="utf-8">
     <input type="hidden" name="dosql" value="do_note_aed" />
     <input type="hidden" name="del" value="1" />
@@ -320,9 +204,22 @@ $view = new w2p_Output_HTML_ViewHelper($AppUI);
         <p><?php $view->showLabel('URL'); ?>
             <?php $view->showField('note_doc_url', $obj->note_doc_url); ?>
         </p>
-        <p><?php $view->showLabel('Description'); ?>
-            <?php $view->showField('_description', $obj->note_body); ?>
-        </p>
+
     </div>
-</div>
->>>>>>> remotes/origin/master
+
+
+
+  
+  <div class="std view notebook">
+
+                       
+        <?php $view->showLabel('Description'); ?>
+
+            <?php //$view->showField('_description', $obj->note_body); 
+            ?>
+  				<div id= "note_body" name = "note_body"  style="width:100%;border:1px solid black;"><?php echo $obj->note_body; ?></div>
+      
+
+
+
+    </div>
