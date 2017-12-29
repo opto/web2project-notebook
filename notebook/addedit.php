@@ -14,10 +14,20 @@ if (!$canEdit) {
 
 print '
        <script language="javascript" type="text/javascript">
-$(document).ready(function(){ CKEDITOR.replace( "note_body" );  });
+$(document).ready(function(){ CKEDITOR.replace( "note_body",
+{
+			extraPlugins: "uploadimage",
+			uploadUrl : "?m=notebook&a=test&suppressHeaders=true&note_id='.$note_id.'",
+			height: 900,
+} ); 
+editor=CKEDITOR.instances.note_body;
 editor.on( "paste", function( evt ) {
-    alert("paste");
-} );		
+ //   alert(evt.data.dataTransfer.isEmpty());
+} );
+//CKEDITOR.config.extraPlugins = "uploadimage";
+//CKEDITOR.config.uploadUrl = "/test.php";
+ });
+		
 </script>
 ';
 
@@ -61,9 +71,19 @@ if (!$obj && $note_id > 0) {
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
-$note_created = new w2p_Utilities_Date($obj->note_created);
-$note_modified = new w2p_Utilities_Date($obj->note_modified);
-
+//if ($note_id > 0) {
+	$note_created = new w2p_Utilities_Date($obj->note_created);
+	$note_modified = new w2p_Utilities_Date($obj->note_modified);
+	//$obj->note_modified_by=$AppUI->user_id;
+/*	}
+	else 
+	{
+		
+	$note_created = ($q->dbfnNowWithTZ());
+	$note_modified = new w2p_Utilities_Date($q->dbfnNowWithTZ()  );
+	
+	}
+*/
 // setup the title block
 $ttl = $note_id ? 'Edit Note' : 'Add Note';
 $titleBlock = new w2p_Theme_TitleBlock($ttl, 'notebook.png', $m, $m . '.' . $a);

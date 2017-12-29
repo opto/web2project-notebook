@@ -73,8 +73,8 @@ $module = new w2p_System_Module();
 $fields = $module->loadSettings('notebook', 'index_list');
 
 if (0 == count($fields)) {
-    $fieldList = array('note_title', 'note_category', 'note_status', 'note_project', 'note_task', 'note_creator', 'note_created');
-    $fieldNames = array('Note Title', 'Category', 'Status', 'Project', 'Task', 'Creator', 'Date');
+    $fieldList = array('note_title', 'note_category', 'note_status', 'note_project', 'note_task', 'note_creator', 'note_dodified');
+    $fieldNames = array('Note Title', 'Category', 'Status', 'Project', 'Task', 'Creator', 'Last Modification');
 
     $fields = array_combine($fieldList, $fieldNames);
 }
