@@ -48,6 +48,17 @@ class CSetupNotebook extends w2p_System_Setup
 		$q->setDelete('sysvals');
 		$q->addWhere('sysval_title = \'NoteStatus\'');
 		$q->exec();
+		
+		$bulk_sql[] = "ALTER TABLE `files` DROP COLUMN `file_note_id`";
+
+        foreach ($bulk_sql as $s) {
+            try {
+                db_exec($s);
+            } catch (Exception $exc) {
+                //do nothing
+            }
+        }
+
 
         return parent::remove();
 	}
