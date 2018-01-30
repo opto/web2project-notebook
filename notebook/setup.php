@@ -14,7 +14,7 @@ if (!defined('W2P_BASE_DIR')) {
 
 $config = array();
 $config['mod_name'] = 'Notebook'; // name the module
-$config['mod_version'] = '4.0.0'; // add a version number
+$config['mod_version'] = '5.0.0'; // add a version number
 $config['mod_directory'] = 'notebook'; // tell web2Project where to find this module
 $config['mod_setup_class'] = 'CSetupNotebook'; // the name of the PHP setup class (used below)
 $config['mod_type'] = 'user'; // 'core' for modules distributed with w2P by standard, 'user' for additional modules from dotmods
@@ -120,7 +120,9 @@ class CSetupNotebook extends w2p_System_Setup
 
     public function upgrade($old_version) {
         switch ($old_version) {
-            case '3.0.0':
+
+                
+                case '3.0.0':
                 $q = $this->_getQuery();
                 $q->alterTable('notes');
                 $q->addField('note_name', 'varchar(255)');
@@ -132,7 +134,15 @@ class CSetupNotebook extends w2p_System_Setup
                 $q->exec();
 
                 $this->addColumns();
-            default:
+             case '4.0.0':
+                $q = $this->_getQuery();
+                $q->alterTable('files');
+                $q->addField('file_note_id', 'int(10) unsigned NOT NULL default \'0\' ');
+                $q->exec();
+
+                $q->clear();
+
+           default:
                 //do nothing
         }
         return true;
