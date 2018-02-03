@@ -25,7 +25,7 @@ editor.on( "paste", function( evt ) {
  //   alert(evt.data.dataTransfer.isEmpty());
 } );
 //CKEDITOR.config.extraPlugins = "uploadimage";
-//CKEDITOR.config.uploadUrl = "/test.php";
+//CKEDITOR.config.uploadUrl = "/do_upload_file_image.php";
  });
 		
 </script>
