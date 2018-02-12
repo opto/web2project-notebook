@@ -7,7 +7,9 @@ global $AppUI, $m, $project_id, $deny, $canRead, $canEdit, $w2Pconfig, $showComp
 $showCompany = false;
 if (canView('notebook')) {
 	if (canEdit('notebook')) {
-		echo '<a href="./index.php?m=notebook&a=addedit&project_id=' . $project_id . '">' . $AppUI->_('Add Note') . '</a>';
+	   $proj= new CProject();
+	   $proj->load($project_id);
+		echo '<a href="./index.php?m=notebook&a=addedit&project_id=' . $project_id . '&company_id='.$proj->project_company.'">' . $AppUI->_('Add Note') . '</a>';
 		echo w2PshowImage('stock_attach-16.png', 16, 16, '', '', $m);
 	}
 
