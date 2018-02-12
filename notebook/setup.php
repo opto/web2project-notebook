@@ -35,6 +35,8 @@ class CSetupNotebook extends w2p_System_Setup
 {
 	public function remove()
     {
+        $success = true;
+		global $AppUI;
         $q = $this->_getQuery();
 		$q->dropTable('notes');
 		$q->exec();
@@ -58,6 +60,17 @@ class CSetupNotebook extends w2p_System_Setup
                 //do nothing
             }
         }
+        //TODO: delete real files first  : in project folder 99999999
+        //delete folder for storing images/files
+        $fold= new CFile_Folder();
+        $nb_prefs = $AppUI->loadPrefs(0,true);
+        $fold->file_folder_id= $nb_prefs['notebook_file_folder_id'] ;
+        $fold->delete();
+        $obj = new w2p_System_Preferences();
+    	$obj->pref_name = "notebook_file_folder_id";
+    	$obj->pref_user=0;
+    	$obj->delete();
+ 
 
 
         return parent::remove();
@@ -65,6 +78,7 @@ class CSetupNotebook extends w2p_System_Setup
 
 	public function install()
     {
+		global $AppUI;
         $q = $this->_getQuery();
 		$q->createTable('notes');
 		$q->createDefinition('(
@@ -80,7 +94,7 @@ class CSetupNotebook extends w2p_System_Setup
             `note_record_id` int(10) unsigned NOT NULL default \'0\',
             `note_category` int(3) unsigned NOT NULL default \'0\',
             `note_status` int(3) unsigned NOT NULL default \'0\',
-            `note_title` varchar(255) NOT NULL default \'\',
+            `note_name` varchar(255) NOT NULL default \'\',
             `note_body` text NOT NULL,
             `note_doc_url` varchar(255) NOT NULL default \'\',
             `note_private` int(1) unsigned NOT NULL default \'0\',
@@ -99,7 +113,7 @@ class CSetupNotebook extends w2p_System_Setup
         if (!$q->exec()) {
             return false;
         }
-
+ 
         $i = 0;
         $noteCategories = ['Unknown', 'Idea', 'Workflow', 'Document'];
         foreach ($noteCategories as $category) {
@@ -126,6 +140,37 @@ class CSetupNotebook extends w2p_System_Setup
             $i++;
         }
 
+        $q = $this->_getQuery();
+        $q->alterTable('files');
+        $q->addField('file_note_id', 'int(10) unsigned NOT NULL default \'0\' ');
+        $q->exec();
+
+        //create folder for storing images/files
+        $fold= new CFile_Folder();
+        $fold->file_folder_parent=0;
+        $fold->file_folder_name="w2p_notebook";
+        $fold->file_folder_description="This folder stores files and images that are embedded or referenced in notes" ;
+        $fold->file_folder_id=0;
+        $fold->store();
+
+        //store folder id in preferences
+
+
+   
+        $obj = new w2p_System_Preferences();
+    	$obj->pref_name = "notebook_file_folder_id";
+    	$obj->pref_value = $fold->file_folder_id;
+    	$obj->pref_user=0;
+    	// prepare (and translate) the module name ready for the suffix
+    	//$AppUI->setMsg('Preferences');
+    	 $obj->store();
+  /* 
+    	if (($msg = $obj->store())) {
+    			$AppUI->setMsg($msg, UI_MSG_ERROR);
+    	}
+
+        $q->clear();
+ */
         return parent::install();
 	}
 
@@ -150,6 +195,29 @@ class CSetupNotebook extends w2p_System_Setup
                 $q->alterTable('files');
                 $q->addField('file_note_id', 'int(10) unsigned NOT NULL default \'0\' ');
                 $q->exec();
+ 
+                //create folder for storing images/files
+                $fold= new CFile_Folder();
+                $fold->file_folder_parent=0;
+                $fold->file_folder_name="w2p_notebook";
+                $fold->file_folder_description="This folder stores files and images that are embedded or referenced in notes" ;
+                $fold->file_folder_id=0;
+                $fold->store();
+                
+                //store folder id in preferences
+
+
+
+                $obj = new w2p_System_Preferences();
+            	$obj->pref_name = "notebook_file_folder_id";
+            	$obj->pref_value = $fold->file_folder_id;
+            	$obj->pref_user=0;
+            	// prepare (and translate) the module name ready for the suffix
+            	$AppUI->setMsg('Preferences');
+            
+            	if (($msg = $obj->store())) {
+            			$AppUI->setMsg($msg, UI_MSG_ERROR);
+            	}
 
                 $q->clear();
 

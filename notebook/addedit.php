@@ -17,7 +17,7 @@ print '
 $(document).ready(function(){ CKEDITOR.replace( "note_body",
 {
 			extraPlugins: "uploadimage",
-			uploadUrl : "?m=notebook&a=test&suppressHeaders=true&note_id='.$note_id.'",
+			uploadUrl : "?m=notebook&a=do_upload_file_image&suppressHeaders=true&note_id='.$note_id.'",
 			height: 900,
 } ); 
 editor=CKEDITOR.instances.note_body;
@@ -36,6 +36,7 @@ $note_parent = (int) w2PgetParam($_GET, 'note_parent', 0);
 $note_project = (int) w2PgetParam($_GET, 'project_id', 0);
 $note_company = (int) w2PgetParam($_GET, 'company_id', 0);
 
+ 
 $q = new w2p_Database_Query();
 $q->addQuery('notes.*');
 $q->addQuery('u.user_username');
@@ -61,6 +62,7 @@ $canDelete = $obj->canDelete($msg, $note_id);
 
 $obj = null;
 $q->loadObject($obj);
+
 // load the record data
 if (!$obj && $note_id > 0) {
 	$AppUI->setMsg('Note');

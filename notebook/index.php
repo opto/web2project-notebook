@@ -2,6 +2,10 @@
 if (!defined('W2P_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
+//TODO:
+//extra folder for notebook files: system_notebook
+//try to propagate note id into file.note_id even if uploaded while creating not (and note_id not assigned yet)
+
 
 $company_id = $AppUI->processIntState('NoteIdxCompany', $_POST, 'company_id', 0);
 $project_id = $AppUI->processIntState('NoteIdxProject', $_POST, 'project_id', 0);

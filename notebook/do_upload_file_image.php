@@ -13,6 +13,7 @@ $note_id = (int) w2PgetParam($_GET, 'note_id', 99999999);   //intentional, to be
 //already checked in addedit, we come from there
 
 $obj = new CFile();
+$nb_prefs = &$AppUI->loadPrefs(0,true);
 
 $upload = null;
 if (isset($_FILES['upload'])   && isset($_FILES['upload']['name']) && $_FILES['upload']['name']!='') {
@@ -28,6 +29,7 @@ if (isset($_FILES['upload'])   && isset($_FILES['upload']['name']) && $_FILES['u
             $file_info['file_version'] = 1.0;
             $file_info['file_category'] = 0;
             $file_info['file_parent'] = 0;
+            $file_info['file_folder'] =   $nb_prefs['notebook_file_folder_id']  ;
             $file_info['file_project'] =99999999;
  //           if (!$new_item) {
                 $file_info['file_description'] = $AppUI->_('This file is associated with notebook item') . ' ' .$note_id ;
@@ -65,7 +67,7 @@ if (isset($_FILES['upload'])   && isset($_FILES['upload']['name']) && $_FILES['u
 		$file_obj->file_size = $upload['size'];
         $file_obj->file_date = str_replace("'", '', $db->DBTimeStamp(time()));
 		$file_obj->file_project = 99999999;//corresponds to notebook
-		$file_obj->_filepath = "tt";
+//		$file_obj->_filepath = "tt";
         $file_obj->file_real_filename = uniqid( rand() );
 
 		$res = $file_obj->moveTemp($upload);
