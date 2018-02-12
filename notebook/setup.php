@@ -62,6 +62,7 @@ class CSetupNotebook extends w2p_System_Setup
         }
         //TODO: delete real files first  : in project folder 99999999
         //delete folder for storing images/files
+        //delete file table entries for notebook files
         $fold= new CFile_Folder();
         $nb_prefs = $AppUI->loadPrefs(0,true);
         $fold->file_folder_id= $nb_prefs['notebook_file_folder_id'] ;
