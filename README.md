@@ -12,7 +12,7 @@ STEPS TO INSTALL:
 LICENSE:
 This module is licensed  Clear BSD or MIT, whatever suits you best and where/when applicable.
 
-Copyright (c) 2007-2010 Pedro Azevedo, web2Project Team. 2017 Klaus Buecher (opto))
+Copyright (c) 2007-2010 Pedro Azevedo, web2Project Team. 2017 - 2019 Klaus Buecher (opto))
 
 All rights reserved.
 
