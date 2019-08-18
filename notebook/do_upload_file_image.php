@@ -32,8 +32,8 @@ if (isset($_FILES['upload'])   && isset($_FILES['upload']['name']) && $_FILES['u
             $file_info['file_folder'] =   $nb_prefs['notebook_file_folder_id']  ;
             $file_info['file_project'] =99999999;
  //           if (!$new_item) {
-                $file_info['file_description'] = $AppUI->_('This file is associated with notebook item') . ' ' .$note_id ;
-                $file_info['file_note_id'] = $note_id;
+            $file_info['file_description'] = $AppUI->_('This file is associated with notebook item') . ' ' .$note_id ;
+            $file_info['file_note_id'] = $note_id;
  //           }
             $file_info['file_owner']=$AppUI->user_id;
 
@@ -65,10 +65,10 @@ if (isset($_FILES['upload'])   && isset($_FILES['upload']['name']) && $_FILES['u
 		$file_obj->file_name = $upload['name'];
 		$file_obj->file_type = $upload['type'];
 		$file_obj->file_size = $upload['size'];
-        $file_obj->file_date = str_replace("'", '', $db->DBTimeStamp(time()));
+        //now in hook  $file_obj->file_date = str_replace("'", '', $db->DBTimeStamp(time()));
 		$file_obj->file_project = 99999999;//corresponds to notebook
 //		$file_obj->_filepath = "tt";
-        $file_obj->file_real_filename = uniqid( rand() );
+        //now in hook??  $file_obj->file_real_filename = uniqid( rand() );
 
 		$res = $file_obj->moveTemp($upload);
 //		if (!$res) {			$AppUI->redirect($redirect);		}

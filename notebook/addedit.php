@@ -13,7 +13,7 @@ if (!$canEdit) {
 }
 
 print '
-       <script language="javascript" type="text/javascript">
+       <script  type="text/javascript">
 $(document).ready(function(){ CKEDITOR.replace( "note_body",
 {
 			extraPlugins: "uploadimage",
@@ -135,7 +135,7 @@ $projects = $project->getAllowedRecords($AppUI->user_id, 'projects.project_id,pr
 $projects = arrayMerge(array('0' => $AppUI->_('All', UI_OUTPUT_JS)), $projects);
 
 ?>
-<script language="javascript" type="text/javascript">
+<script  type="text/javascript">
 function submitIt() {
 	var f = document.uploadFrm;
 	f.submit();
